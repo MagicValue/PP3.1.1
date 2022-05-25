@@ -7,23 +7,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import com.example.demo.service.UserService;
+import com.example.demo.service.UserServiceImpl;
 
 import java.util.List;
 
 @Controller
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @GetMapping("/users")
     public String findAll(Model model) {
-        List<User> users = userService.findAll();
+        List<User> users = userServiceImpl.findAll();
         model.addAttribute("users", users);
         return "user-list";
     }
@@ -35,26 +35,26 @@ public class UserController {
 
     @PostMapping("/user-create")
     public String createUser(User user) {
-        userService.saveUser(user);
+        userServiceImpl.saveUser(user);
         return "redirect:/users";
     }
 
     @GetMapping("user-delete/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
-        userService.deleteById(id);
+        userServiceImpl.deleteById(id);
         return "redirect:/users";
     }
 
     @GetMapping("/user-update/{id}")
     public String updateUserForm(@PathVariable("id") Long id, Model model) {
-        User user = userService.findById(id);
+        User user = userServiceImpl.findById(id);
         model.addAttribute("user", user);
         return "user-update";
     }
 
     @PostMapping("/user-update")
     public String updateUser(User user) {
-        userService.saveUser(user);
+        userServiceImpl.saveUser(user);
         return "redirect:/users";
     }
 }
